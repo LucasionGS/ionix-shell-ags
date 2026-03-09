@@ -12,7 +12,7 @@ const panelStates = new Map(
 )
 
 app.start({
-  instanceName: "ion-ags",
+  instanceName: "ionix-shell",
   css: style,
 
   requestHandler(argv, res) {

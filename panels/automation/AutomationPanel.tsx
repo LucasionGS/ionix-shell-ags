@@ -208,7 +208,7 @@ export function AutomationPanel(
 
               <label
                 class="auto-empty"
-                label="No automation rules defined.\nEdit ~/.config/ion-ags/automations.json to add rules."
+                label="No automation rules defined.\nEdit ~/.config/ionix-shell/automations.json to add rules."
                 xalign={0.5}
                 yalign={0.5}
                 justify={Gtk.Justification.CENTER}
@@ -221,7 +221,7 @@ export function AutomationPanel(
           <box class="auto-footer">
             <label
               class="auto-footer-hint"
-              label="Rules in ~/.config/ion-ags/automations.json"
+              label="Rules in ~/.config/ionix-shell/automations.json"
               xalign={0}
               hexpand
             />
