@@ -1,0 +1,149 @@
+@use "sass:color";
+@use "../../variables" as *;
+
+.ssh-panel-backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.ssh-panel {
+  min-width: 520px;
+  border-radius: 16px;
+  padding: 0;
+  background-color: color.adjust($bg, $lightness: 3%);
+  border: 1px solid color.adjust($fg, $alpha: -0.9);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
+}
+
+.ssh-header {
+  padding: 20px 24px 14px;
+  border-bottom: 1px solid color.adjust($fg, $alpha: -0.9);
+}
+
+.ssh-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: $accent;
+  margin-bottom: 12px;
+}
+
+.ssh-search {
+  background-color: color.adjust($bg, $lightness: 6%);
+  border: 1px solid color.adjust($fg, $alpha: -0.85);
+  border-radius: $radius;
+  padding: 10px 14px;
+  color: $fg;
+  font-size: 1em;
+  caret-color: $accent;
+
+  &:focus {
+    border-color: color.adjust($accent, $alpha: -0.4);
+    box-shadow: 0 0 0 2px color.adjust($accent, $alpha: -0.75);
+  }
+}
+
+.ssh-list-scroll {
+  min-height: 400px;
+}
+
+.ssh-list {
+  padding: 8px;
+}
+
+.ssh-item {
+  all: unset;
+  padding: 12px 16px;
+  margin: 2px 4px;
+  border-radius: $radius;
+  border: 1px solid transparent;
+  transition: all 150ms ease;
+  color: $fg;
+
+  &:hover {
+    background-color: color.adjust($accent, $alpha: -0.85);
+    border-color: color.adjust($accent, $alpha: -0.65);
+  }
+
+  &:active {
+    background-color: color.adjust($accent, $alpha: -0.75);
+  }
+
+  // Currently selected item (arrow key navigation)
+  &.selected {
+    background-color: color.adjust($accent, $alpha: -0.85);
+    border-color: color.adjust($accent, $alpha: -0.55);
+
+    .ssh-item-icon {
+      color: color.adjust($accent, $lightness: 15%);
+    }
+
+    .ssh-item-name {
+      color: $accent;
+    }
+
+    &:hover {
+      background-color: color.adjust($accent, $alpha: -0.75);
+      border-color: color.adjust($accent, $alpha: -0.4);
+    }
+  }
+}
+
+.ssh-item-icon {
+  margin-right: 10px;
+  color: $accent;
+  font-size: 1.2em;
+}
+
+.ssh-item-name {
+  font-size: 1em;
+  font-weight: 600;
+  color: $fg;
+}
+
+.ssh-item-group {
+  font-size: 0.75em;
+  color: $secondary;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background-color: color.adjust($secondary, $alpha: -0.88);
+  margin-left: 8px;
+}
+
+.ssh-item-details {
+  margin-left: 30px;
+  margin-top: 3px;
+}
+
+.ssh-item-user {
+  font-size: 0.85em;
+  color: color.adjust($fg, $alpha: -0.45);
+}
+
+.ssh-item-port {
+  font-size: 0.85em;
+  color: $secondary;
+  margin-left: 4px;
+}
+
+.ssh-item-jump {
+  font-size: 0.75em;
+  color: $accent;
+  margin-left: 8px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  background-color: color.adjust($accent, $alpha: -0.88);
+}
+
+.ssh-footer {
+  padding: 12px 24px;
+  border-top: 1px solid color.adjust($fg, $alpha: -0.9);
+}
+
+.ssh-footer-hint {
+  font-size: 0.8em;
+  color: color.adjust($accent, $alpha: -0.3);
+}
+
+.ssh-footer-keys {
+  font-size: 0.75em;
+  color: color.adjust($fg, $alpha: -0.6);
+}

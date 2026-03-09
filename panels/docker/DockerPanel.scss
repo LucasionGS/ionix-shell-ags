@@ -1,0 +1,231 @@
+@use "sass:color";
+@use "../../variables" as *;
+
+.docker-backdrop {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.docker-panel {
+  min-width: 400px;
+  background-color: $bg;
+  border-right: 2px solid color.adjust($accent, $alpha: -0.7);
+  padding: 0;
+}
+
+// Header
+.docker-header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid color.adjust($fg, $alpha: -0.9);
+}
+
+.docker-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: $accent;
+}
+
+.docker-count {
+  font-size: 0.9em;
+  color: color.adjust($fg, $alpha: -0.4);
+  margin-right: 10px;
+}
+
+.docker-refresh-btn {
+  all: unset;
+  min-width: 30px;
+  min-height: 30px;
+  border-radius: $radius;
+  background-color: color.adjust($fg, $alpha: -0.92);
+
+  icon {
+    color: $fg;
+  }
+
+  &:hover {
+    background-color: color.adjust($accent, $alpha: -0.8);
+
+    icon {
+      color: $accent;
+    }
+  }
+}
+
+// Search
+.docker-search {
+  background-color: color.adjust($bg, $lightness: 6%);
+  border: 1px solid color.adjust($fg, $alpha: -0.85);
+  border-radius: $radius;
+  padding: 10px 14px;
+  margin: 12px 20px;
+  color: $fg;
+  font-size: 1em;
+  caret-color: $accent;
+
+  &:focus {
+    border-color: color.adjust($accent, $alpha: -0.4);
+    box-shadow: 0 0 0 2px color.adjust($accent, $alpha: -0.75);
+  }
+}
+
+// List
+.docker-list-scroll {
+  min-height: 200px;
+}
+
+.docker-list {
+  padding: 4px 12px;
+}
+
+// Container item
+.docker-item {
+  padding: 12px 14px;
+  margin: 3px 0;
+  border-radius: $radius;
+  background-color: color.adjust($bg, $lightness: 3%);
+  border-left: 3px solid transparent;
+
+  &.running {
+    border-left-color: $accent;
+  }
+
+  &.stopped {
+    border-left-color: color.adjust($fg, $alpha: -0.8);
+  }
+}
+
+.docker-item-header {
+  margin-bottom: 4px;
+}
+
+.docker-state-dot {
+  margin-right: 8px;
+  font-size: 0.8em;
+
+  &.running {
+    color: #66bb6a;
+  }
+
+  &.stopped {
+    color: color.adjust($fg, $alpha: -0.65);
+  }
+}
+
+.docker-item-name {
+  font-weight: bold;
+  font-size: 0.95em;
+  color: $fg;
+}
+
+.docker-item-image {
+  font-size: 0.8em;
+  color: color.adjust($fg, $alpha: -0.5);
+  margin-left: 22px;
+}
+
+.docker-item-status {
+  font-size: 0.75em;
+  color: color.adjust($fg, $alpha: -0.6);
+  margin-left: 22px;
+  margin-top: 1px;
+}
+
+.docker-item-project {
+  font-size: 0.75em;
+  color: color.adjust($accent, $alpha: -0.3);
+  margin-left: 22px;
+  margin-top: 3px;
+}
+
+.docker-item-ports {
+  font-size: 0.8em;
+  color: $secondary;
+  margin-left: 22px;
+  margin-top: 4px;
+  padding: 3px 0;
+}
+
+// Buttons
+.docker-toggle-btn {
+  all: unset;
+  min-width: 28px;
+  min-height: 28px;
+  border-radius: $radius;
+
+  &.stop {
+    background-color: color.adjust($error, $alpha: -0.88);
+
+    icon {
+      color: color.adjust($error, $lightness: 15%);
+    }
+
+    &:hover {
+      background-color: color.adjust($error, $alpha: -0.75);
+    }
+  }
+
+  &.start {
+    background-color: color.adjust($accent, $alpha: -0.88);
+
+    icon {
+      color: $accent;
+    }
+
+    &:hover {
+      background-color: color.adjust($accent, $alpha: -0.75);
+    }
+  }
+}
+
+.docker-copy-id {
+  all: unset;
+  min-width: 28px;
+  min-height: 28px;
+  border-radius: $radius;
+  background-color: color.adjust($fg, $alpha: -0.92);
+  margin-right: 4px;
+
+  icon {
+    color: color.adjust($fg, $alpha: -0.4);
+  }
+
+  &:hover {
+    background-color: color.adjust($accent, $alpha: -0.8);
+
+    icon {
+      color: $accent;
+    }
+  }
+}
+
+.docker-open-dir {
+  all: unset;
+  min-width: 28px;
+  min-height: 28px;
+  border-radius: $radius;
+  background-color: color.adjust($secondary, $alpha: -0.88);
+  margin-right: 4px;
+
+  icon {
+    color: $secondary;
+  }
+
+  &:hover {
+    background-color: color.adjust($secondary, $alpha: -0.75);
+  }
+}
+
+// Footer
+.docker-footer {
+  padding: 10px 20px;
+  border-top: 1px solid color.adjust($fg, $alpha: -0.9);
+}
+
+.docker-footer-count {
+  font-size: 0.8em;
+  color: color.adjust($accent, $alpha: -0.3);
+}
+
+.docker-footer-keys {
+  font-size: 0.75em;
+  color: color.adjust($fg, $alpha: -0.6);
+}

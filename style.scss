@@ -1,0 +1,12 @@
+@use "variables" as *;
+@use "panels/ssh/SshPanel";
+@use "panels/vpn/VpnPanel";
+@use "panels/docker/DockerPanel";
+@use "panels/command-palette/CommandPalette";
+@use "panels/automation/AutomationPanel";
+
+// Global window reset for overlay panels
+window {
+  all: unset;
+  background: transparent;
+}

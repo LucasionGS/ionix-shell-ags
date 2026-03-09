@@ -1,0 +1,211 @@
+@use "sass:color";
+@use "../../variables" as *;
+
+.vpn-panel-backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.vpn-panel {
+  min-width: 480px;
+  border-radius: 16px;
+  padding: 0;
+  background-color: color.adjust($bg, $lightness: 3%);
+  border: 1px solid color.adjust($fg, $alpha: -0.9);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
+}
+
+.vpn-header {
+  padding: 20px 24px 14px;
+  border-bottom: 1px solid color.adjust($fg, $alpha: -0.9);
+}
+
+.vpn-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: $accent;
+}
+
+// Status badge
+.vpn-status {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 600;
+
+  &.connected {
+    background-color: rgba(76, 175, 80, 0.2);
+    border: 1px solid rgba(76, 175, 80, 0.5);
+
+    label {
+      color: #66bb6a;
+    }
+  }
+
+  &.disconnected {
+    background-color: color.adjust($fg, $alpha: -0.92);
+    border: 1px solid color.adjust($fg, $alpha: -0.85);
+
+    label {
+      color: color.adjust($fg, $alpha: -0.4);
+    }
+  }
+
+  &.connecting {
+    background-color: color.adjust($secondary, $alpha: -0.85);
+    border: 1px solid color.adjust($secondary, $alpha: -0.6);
+
+    label {
+      color: $secondary;
+    }
+  }
+}
+
+// Disconnect button
+.vpn-disconnect-btn {
+  all: unset;
+  margin-top: 10px;
+  padding: 8px 16px;
+  border-radius: $radius;
+  background-color: color.adjust($error, $alpha: -0.85);
+  border: 1px solid color.adjust($error, $alpha: -0.6);
+  transition: all 150ms ease;
+
+  icon {
+    color: color.adjust($error, $lightness: 20%);
+    margin-right: 8px;
+  }
+
+  label {
+    color: color.adjust($error, $lightness: 20%);
+    font-size: 0.9em;
+    font-weight: 600;
+  }
+
+  &:hover {
+    background-color: color.adjust($error, $alpha: -0.7);
+    border-color: color.adjust($error, $alpha: -0.4);
+  }
+
+  &:active {
+    background-color: color.adjust($error, $alpha: -0.55);
+  }
+}
+
+// Search
+.vpn-search {
+  background-color: color.adjust($bg, $lightness: 6%);
+  border: 1px solid color.adjust($fg, $alpha: -0.85);
+  border-radius: $radius;
+  padding: 10px 14px;
+  margin-top: 12px;
+  color: $fg;
+  font-size: 1em;
+  caret-color: $accent;
+
+  &:focus {
+    border-color: color.adjust($accent, $alpha: -0.4);
+    box-shadow: 0 0 0 2px color.adjust($accent, $alpha: -0.75);
+  }
+}
+
+// List
+.vpn-list-scroll {
+  min-height: 200px;
+}
+
+.vpn-list {
+  padding: 8px;
+}
+
+.vpn-item {
+  all: unset;
+  padding: 12px 16px;
+  margin: 2px 4px;
+  border-radius: $radius;
+  border: 1px solid transparent;
+  transition: all 150ms ease;
+  color: $fg;
+
+  &:hover {
+    background-color: color.adjust($accent, $alpha: -0.85);
+    border-color: color.adjust($accent, $alpha: -0.65);
+  }
+
+  &:active {
+    background-color: color.adjust($accent, $alpha: -0.75);
+  }
+
+  &.selected {
+    background-color: color.adjust($accent, $alpha: -0.85);
+    border-color: color.adjust($accent, $alpha: -0.55);
+
+    .vpn-item-icon {
+      color: color.adjust($accent, $lightness: 15%);
+    }
+
+    .vpn-item-name {
+      color: $accent;
+    }
+
+    &:hover {
+      background-color: color.adjust($accent, $alpha: -0.75);
+      border-color: color.adjust($accent, $alpha: -0.4);
+    }
+  }
+}
+
+.vpn-item-icon {
+  margin-right: 10px;
+  color: $accent;
+  font-size: 1.2em;
+}
+
+.vpn-item-name {
+  font-size: 1em;
+  font-weight: 600;
+  color: $fg;
+}
+
+.vpn-item-primary {
+  font-size: 0.7em;
+  color: #66bb6a;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background-color: rgba(76, 175, 80, 0.15);
+  margin-left: 8px;
+}
+
+.vpn-item-sso {
+  font-size: 0.7em;
+  color: $accent;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background-color: color.adjust($accent, $alpha: -0.88);
+  margin-left: 6px;
+}
+
+.vpn-item-details {
+  margin-left: 30px;
+  margin-top: 3px;
+}
+
+.vpn-item-server {
+  font-size: 0.85em;
+  color: color.adjust($fg, $alpha: -0.45);
+}
+
+// Footer
+.vpn-footer {
+  padding: 12px 24px;
+  border-top: 1px solid color.adjust($fg, $alpha: -0.9);
+}
+
+.vpn-footer-hint {
+  font-size: 0.8em;
+  color: color.adjust($accent, $alpha: -0.3);
+}
+
+.vpn-footer-keys {
+  font-size: 0.75em;
+  color: color.adjust($fg, $alpha: -0.6);
+}

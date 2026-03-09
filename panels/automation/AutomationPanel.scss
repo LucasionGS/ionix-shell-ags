@@ -1,0 +1,178 @@
+@use "sass:color";
+@use "../../variables" as *;
+
+.auto-backdrop {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.auto-panel {
+  min-width: 400px;
+  background-color: $bg;
+  border-left: 2px solid color.adjust($accent, $alpha: -0.7);
+  padding: 0;
+}
+
+// Header
+.auto-header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid color.adjust($fg, $alpha: -0.9);
+}
+
+.auto-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: $accent;
+}
+
+.auto-count {
+  font-size: 0.9em;
+  color: color.adjust($fg, $alpha: -0.4);
+}
+
+// List
+.auto-list-scroll {
+  min-height: 200px;
+}
+
+.auto-list {
+  padding: 8px 12px;
+}
+
+// Rule card
+.auto-rule {
+  padding: 12px 14px;
+  margin: 4px 0;
+  border-radius: $radius;
+  background-color: color.adjust($bg, $lightness: 3%);
+  border-left: 3px solid transparent;
+
+  &.enabled {
+    border-left-color: #66bb6a;
+  }
+
+  &.disabled {
+    border-left-color: color.adjust($fg, $alpha: -0.8);
+  }
+}
+
+.auto-rule-header {
+  margin-bottom: 8px;
+}
+
+.auto-rule-name {
+  font-weight: bold;
+  font-size: 0.95em;
+  color: $fg;
+}
+
+.auto-toggle-btn {
+  all: unset;
+  min-width: 36px;
+  min-height: 24px;
+  border-radius: $radius;
+  margin-right: 4px;
+
+  label {
+    font-size: 0.72em;
+    font-weight: bold;
+  }
+
+  &.on {
+    background-color: color.adjust(#66bb6a, $alpha: -0.8);
+
+    label {
+      color: #66bb6a;
+    }
+
+    &:hover {
+      background-color: color.adjust(#66bb6a, $alpha: -0.65);
+    }
+  }
+
+  &.off {
+    background-color: color.adjust($fg, $alpha: -0.92);
+
+    label {
+      color: color.adjust($fg, $alpha: -0.5);
+    }
+
+    &:hover {
+      background-color: color.adjust($fg, $alpha: -0.85);
+    }
+  }
+}
+
+.auto-delete-btn {
+  all: unset;
+  min-width: 24px;
+  min-height: 24px;
+  border-radius: $radius;
+  background-color: color.adjust($error, $alpha: -0.92);
+
+  icon {
+    color: color.adjust($error, $alpha: -0.3);
+    font-size: 0.8em;
+  }
+
+  &:hover {
+    background-color: color.adjust($error, $alpha: -0.75);
+
+    icon {
+      color: $error;
+    }
+  }
+}
+
+// Trigger / Action rows
+.auto-rule-trigger,
+.auto-rule-action {
+  margin-top: 4px;
+  margin-left: 4px;
+}
+
+.auto-rule-label {
+  font-size: 0.7em;
+  font-weight: bold;
+  color: $accent;
+  min-width: 36px;
+  margin-right: 8px;
+}
+
+.auto-rule-action .auto-rule-label {
+  color: $secondary;
+}
+
+.auto-rule-value {
+  font-size: 0.8em;
+  color: color.adjust($fg, $alpha: -0.3);
+}
+
+.auto-rule-last {
+  font-size: 0.7em;
+  color: color.adjust($fg, $alpha: -0.6);
+  margin-top: 6px;
+  margin-left: 4px;
+}
+
+// Empty state
+.auto-empty {
+  font-size: 0.9em;
+  color: color.adjust($fg, $alpha: -0.5);
+  padding: 40px 20px;
+}
+
+// Footer
+.auto-footer {
+  padding: 10px 20px;
+  border-top: 1px solid color.adjust($fg, $alpha: -0.9);
+}
+
+.auto-footer-hint {
+  font-size: 0.75em;
+  color: color.adjust($fg, $alpha: -0.5);
+}
+
+.auto-footer-keys {
+  font-size: 0.72em;
+  color: color.adjust($fg, $alpha: -0.6);
+}
