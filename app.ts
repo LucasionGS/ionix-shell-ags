@@ -4,12 +4,18 @@ import { createState } from "gnim"
 import style from "./style.scss"
 import panels from "./panels/index"
 import { getEngine } from "./panels/automation/engine"
+import { registerPanelToggle } from "./panels/panel-toggle"
 
 // Create state for each panel before app.start so both main() and
 // requestHandler() can reference them.
 const panelStates = new Map(
   panels.map((p) => [p.id, createState(false)] as const),
 )
+
+// Register togglers so providers can toggle panels directly (no IPC)
+for (const [id, [visible, setVisible]] of panelStates) {
+  registerPanelToggle(id, () => setVisible(!visible()))
+}
 
 app.start({
   instanceName: "ionix-shell",

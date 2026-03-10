@@ -27,6 +27,23 @@
 .auto-count {
   font-size: 0.9em;
   color: color.adjust($fg, $alpha: -0.4);
+  margin-right: 10px;
+}
+
+.auto-add-btn {
+  all: unset;
+  min-width: 30px;
+  min-height: 30px;
+  border-radius: $radius;
+  background-color: color.adjust($accent, $alpha: -0.88);
+
+  icon {
+    color: $accent;
+  }
+
+  &:hover {
+    background-color: color.adjust($accent, $alpha: -0.75);
+  }
 }
 
 // List
@@ -175,4 +192,175 @@
 .auto-footer-keys {
   font-size: 0.72em;
   color: color.adjust($fg, $alpha: -0.6);
+}
+
+// ── Editor ──────────────────────────────────────
+
+.auto-editor {
+  padding: 14px;
+  margin: 4px 0 8px;
+  border-radius: $radius;
+  background-color: color.adjust($bg, $lightness: 4%);
+  border-left: 3px solid $accent;
+}
+
+.auto-editor-header {
+  margin-bottom: 10px;
+}
+
+.auto-editor-title {
+  font-size: 1em;
+  font-weight: bold;
+  color: $accent;
+}
+
+.auto-editor-cancel {
+  all: unset;
+  padding: 4px 10px;
+  border-radius: $radius;
+  font-size: 0.8em;
+  background-color: color.adjust($fg, $alpha: -0.92);
+  color: color.adjust($fg, $alpha: -0.4);
+
+  &:hover {
+    background-color: color.adjust($error, $alpha: -0.85);
+    color: $error;
+  }
+}
+
+.auto-editor-input {
+  background-color: color.adjust($bg, $lightness: 8%);
+  border: 1px solid color.adjust($fg, $alpha: -0.85);
+  border-radius: $radius;
+  padding: 8px 12px;
+  margin: 4px 0;
+  color: $fg;
+  font-size: 0.85em;
+  caret-color: $accent;
+
+  &:focus {
+    border-color: color.adjust($accent, $alpha: -0.4);
+  }
+}
+
+.auto-editor-input-sm {
+  min-width: 50px;
+}
+
+.auto-editor-sep {
+  font-size: 1em;
+  color: color.adjust($fg, $alpha: -0.4);
+  margin: 0 4px;
+}
+
+.auto-editor-name {
+  margin-bottom: 8px;
+}
+
+// Section
+.auto-editor-section {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid color.adjust($fg, $alpha: -0.92);
+}
+
+.auto-editor-section-label {
+  font-size: 0.75em;
+  font-weight: bold;
+  color: $accent;
+  margin-bottom: 6px;
+}
+
+// Type buttons (shared between trigger and action)
+.auto-editor-type-bar {
+  margin-bottom: 6px;
+}
+
+.auto-type-btn {
+  all: unset;
+  padding: 3px 8px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  border-radius: $radius;
+  font-size: 0.72em;
+  background-color: color.adjust($fg, $alpha: -0.92);
+  color: color.adjust($fg, $alpha: -0.4);
+
+  &:hover {
+    background-color: color.adjust($accent, $alpha: -0.85);
+    color: $accent;
+  }
+
+  &.active {
+    background-color: color.adjust($accent, $alpha: -0.8);
+    color: $accent;
+    font-weight: bold;
+  }
+}
+
+.auto-editor-fields {
+  margin-bottom: 4px;
+}
+
+// Action chips
+.auto-editor-actions-list {
+  margin-bottom: 6px;
+}
+
+.auto-editor-action-chip {
+  padding: 4px 8px;
+  margin: 2px 0;
+  border-radius: $radius;
+  background-color: color.adjust($secondary, $alpha: -0.88);
+}
+
+.auto-editor-chip-text {
+  font-size: 0.78em;
+  color: $secondary;
+}
+
+.auto-editor-chip-remove {
+  all: unset;
+  min-width: 18px;
+  min-height: 18px;
+  border-radius: $radius;
+
+  label {
+    font-size: 0.85em;
+    color: color.adjust($fg, $alpha: -0.4);
+  }
+
+  &:hover label {
+    color: $error;
+  }
+}
+
+.auto-editor-add-action {
+  all: unset;
+  padding: 4px 10px;
+  margin-top: 4px;
+  border-radius: $radius;
+  font-size: 0.78em;
+  background-color: color.adjust($secondary, $alpha: -0.88);
+  color: $secondary;
+
+  &:hover {
+    background-color: color.adjust($secondary, $alpha: -0.75);
+  }
+}
+
+// Save button
+.auto-editor-save {
+  all: unset;
+  padding: 8px 16px;
+  margin-top: 10px;
+  border-radius: $radius;
+  background-color: color.adjust($accent, $alpha: -0.7);
+  color: $accent;
+  font-weight: bold;
+  font-size: 0.85em;
+
+  &:hover {
+    background-color: color.adjust($accent, $alpha: -0.5);
+  }
 }

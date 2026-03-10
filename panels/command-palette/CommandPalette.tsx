@@ -12,6 +12,7 @@ import { keybindsProvider } from "./providers/keybinds-provider"
 import { windowsProvider } from "./providers/windows-provider"
 import { scriptsProvider } from "./providers/scripts-provider"
 import { zoxideProvider } from "./providers/zoxide-provider"
+import { panelsProvider } from "./providers/panels-provider"
 
 const SYNC_PROVIDERS: CommandProvider[] = [
   systemProvider,
@@ -19,6 +20,7 @@ const SYNC_PROVIDERS: CommandProvider[] = [
   sshProvider,
   vpnProvider,
   scriptsProvider,
+  panelsProvider,
 ]
 
 const ASYNC_PROVIDERS: CommandProvider[] = [

@@ -8,6 +8,7 @@ export type CommandCategory =
   | "script"
   | "directory"
   | "system"
+  | "panel"
 
 export interface CommandResult {
   id: string
@@ -36,6 +37,7 @@ export const CATEGORY_LABELS: Record<CommandCategory, string> = {
   script: "Scripts",
   directory: "Directories",
   system: "System",
+  panel: "Panels",
 }
 
 export const CATEGORY_ICONS: Record<CommandCategory, string> = {
@@ -48,4 +50,5 @@ export const CATEGORY_ICONS: Record<CommandCategory, string> = {
   script: "utilities-terminal-symbolic",
   directory: "folder-symbolic",
   system: "preferences-system-symbolic",
+  panel: "view-grid-symbolic",
 }

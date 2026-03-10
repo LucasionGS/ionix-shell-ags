@@ -4,6 +4,7 @@ import { VpnPanel } from "./vpn/VpnPanel"
 import { DockerPanel } from "./docker/DockerPanel"
 import { CommandPalette } from "./command-palette/CommandPalette"
 import { AutomationPanel } from "./automation/AutomationPanel"
+import { BooruPanel } from "./booru/BooruPanel"
 import { Astal } from "ags/gtk3"
 
 const { TOP, BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor
@@ -40,6 +41,14 @@ const panels: PanelDefinition[] = [
     exclusivity: Astal.Exclusivity.NORMAL,
     layer: Astal.Layer.OVERLAY,
     setup: CommandPalette,
+  },
+  {
+    id: "booru",
+    anchor: TOP | BOTTOM | LEFT | RIGHT,
+    keymode: Astal.Keymode.ON_DEMAND,
+    exclusivity: Astal.Exclusivity.NORMAL,
+    layer: Astal.Layer.OVERLAY,
+    setup: BooruPanel,
   },
   {
     id: "automation",

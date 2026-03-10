@@ -1,0 +1,216 @@
+@use "sass:color";
+@use "../../variables" as *;
+
+.booru-backdrop {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.booru-panel {
+  min-width: 500px;
+  background-color: $bg;
+  border-right: 2px solid color.adjust($accent, $alpha: -0.7);
+  padding: 0;
+}
+
+// Header
+.booru-header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid color.adjust($fg, $alpha: -0.9);
+}
+
+.booru-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: $accent;
+}
+
+.booru-refresh-btn {
+  all: unset;
+  min-width: 30px;
+  min-height: 30px;
+  border-radius: $radius;
+  background-color: color.adjust($fg, $alpha: -0.92);
+
+  icon {
+    color: $fg;
+  }
+
+  &:hover {
+    background-color: color.adjust($accent, $alpha: -0.8);
+
+    icon {
+      color: $accent;
+    }
+  }
+}
+
+// Search
+.booru-search {
+  background-color: color.adjust($bg, $lightness: 6%);
+  border: 1px solid color.adjust($fg, $alpha: -0.85);
+  border-radius: $radius;
+  padding: 10px 14px;
+  margin: 12px 20px;
+  color: $fg;
+  font-size: 1em;
+  caret-color: $accent;
+
+  &:focus {
+    border-color: color.adjust($accent, $alpha: -0.4);
+    box-shadow: 0 0 0 2px color.adjust($accent, $alpha: -0.75);
+  }
+}
+
+// Rating bar
+.booru-rating-bar {
+  padding: 0 20px 10px;
+}
+
+.booru-rating-btn {
+  all: unset;
+  padding: 4px 12px;
+  margin-right: 6px;
+  border-radius: $radius;
+  font-size: 0.8em;
+  background-color: color.adjust($fg, $alpha: -0.92);
+  color: color.adjust($fg, $alpha: -0.4);
+
+  &:hover {
+    background-color: color.adjust($accent, $alpha: -0.85);
+    color: $accent;
+  }
+
+  &.active {
+    background-color: color.adjust($accent, $alpha: -0.8);
+    color: $accent;
+    font-weight: bold;
+  }
+}
+
+// Grid
+.booru-grid-scroll {
+  min-height: 300px;
+}
+
+.booru-grid {
+  padding: 4px 12px;
+}
+
+.booru-row {
+  margin-bottom: 8px;
+}
+
+.booru-status-msg {
+  font-size: 0.9em;
+  color: color.adjust($fg, $alpha: -0.5);
+  padding: 40px 0;
+}
+
+// Card
+.booru-card {
+  padding: 6px;
+  margin: 0 4px;
+  border-radius: $radius;
+  background-color: color.adjust($bg, $lightness: 3%);
+
+  &:hover {
+    background-color: color.adjust($bg, $lightness: 6%);
+  }
+}
+
+.booru-card-image {
+  border-radius: calc(#{$radius} - 2px);
+  background-color: color.adjust($bg, $lightness: 1%);
+
+  image {
+    border-radius: calc(#{$radius} - 2px);
+  }
+}
+
+.booru-card-loading {
+  font-size: 0.75em;
+  color: color.adjust($fg, $alpha: -0.6);
+  padding: 20px 0;
+}
+
+.booru-card-info {
+  padding: 6px 2px 2px;
+}
+
+.booru-card-score {
+  font-size: 0.8em;
+  color: $secondary;
+  margin-right: 8px;
+}
+
+.booru-card-dims {
+  font-size: 0.75em;
+  color: color.adjust($fg, $alpha: -0.5);
+}
+
+.booru-card-tags {
+  font-size: 0.7em;
+  color: color.adjust($fg, $alpha: -0.55);
+  padding: 2px 2px 4px;
+}
+
+// Download button
+.booru-download-btn {
+  all: unset;
+  min-width: 26px;
+  min-height: 26px;
+  border-radius: $radius;
+  background-color: color.adjust($accent, $alpha: -0.88);
+
+  icon {
+    color: $accent;
+  }
+
+  &:hover {
+    background-color: color.adjust($accent, $alpha: -0.75);
+  }
+
+  &.done {
+    background-color: color.adjust(#66bb6a, $alpha: -0.88);
+
+    icon {
+      color: #66bb6a;
+    }
+  }
+}
+
+// Footer
+.booru-footer {
+  padding: 10px 20px;
+  border-top: 1px solid color.adjust($fg, $alpha: -0.9);
+}
+
+.booru-footer-page {
+  font-size: 0.85em;
+  color: color.adjust($accent, $alpha: -0.3);
+}
+
+.booru-footer-keys {
+  font-size: 0.75em;
+  color: color.adjust($fg, $alpha: -0.6);
+}
+
+.booru-page-btn {
+  all: unset;
+  padding: 4px 12px;
+  margin-right: 8px;
+  border-radius: $radius;
+  font-size: 0.8em;
+  background-color: color.adjust($fg, $alpha: -0.92);
+  color: $fg;
+
+  &:hover {
+    background-color: color.adjust($accent, $alpha: -0.8);
+    color: $accent;
+  }
+
+  &:disabled {
+    color: color.adjust($fg, $alpha: -0.7);
+    background-color: color.adjust($fg, $alpha: -0.95);
+  }
+}
