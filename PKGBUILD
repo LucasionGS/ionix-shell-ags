@@ -41,7 +41,7 @@ package() {
     cd "$srcdir/$pkgname"
 
     # Install the AGS bundle
-    install -Dm644 ionix-shell "$pkgdir/usr/share/$pkgname/ionix-shell"
+    install -Dm755 ionix-shell "$pkgdir/usr/share/$pkgname/ionix-shell"
 
     # Link the executable
     install -Dm755 /dev/stdin "$pkgdir/usr/bin/$pkgname" << EOF
