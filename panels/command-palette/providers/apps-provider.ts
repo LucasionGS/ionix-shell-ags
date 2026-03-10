@@ -1,4 +1,5 @@
 import Gio from "gi://Gio"
+import Gdk from "gi://Gdk"
 import type { CommandProvider } from "./types"
 
 export const appsProvider: CommandProvider = {
@@ -23,7 +24,12 @@ export const appsProvider: CommandProvider = {
           icon,
           keywords: `${name} ${desc}`.toLowerCase(),
           execute: () => {
-            appInfo.launch([], null)
+            try {
+              const ctx = Gdk.Display.get_default()?.get_app_launch_context() ?? null
+              appInfo.launch([], ctx)
+            } catch (error) {
+              appInfo.launch([], null)
+            }
           },
         }
       })
