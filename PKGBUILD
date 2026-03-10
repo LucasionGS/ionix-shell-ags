@@ -20,10 +20,11 @@ optdepends=(
     'hyprshot: Screenshot capture support'
     'copyq: Clipboard manager integration'
     'zoxide: Frecency-based directory navigation in command palette'
+    'ionix-openconnect-tools: OpenConnect VPN panel'
     'openconnect: VPN panel (requires oc wrapper CLI)'
 )
 makedepends=('git' 'ags')
-source=("$pkgname::git+file://$startdir")
+source=("$pkgname::git+https://github.com/LucasionGS/ionix-shell-ags.git")
 sha256sums=('SKIP')
 
 pkgver() {
