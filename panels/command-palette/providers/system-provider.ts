@@ -21,6 +21,15 @@ const SYSTEM_COMMANDS: CommandResult[] = [
     execute: () => { execAsync("hyprctl reload") },
   },
   {
+    id: "system:restart-ionix-shell",
+    category: "system",
+    name: "Restart Ionix Shell",
+    description: "Restart Ionix Shell service",
+    icon: "view-refresh-symbolic",
+    keywords: "restart ionix shell service restart",
+    execute: () => { execAsync("systemctl --user restart ionix-shell.service") },
+  },
+  {
     id: "system:screenshot-region",
     category: "system",
     name: "Screenshot Region",
