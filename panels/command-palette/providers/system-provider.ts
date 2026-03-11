@@ -101,7 +101,7 @@ const SYSTEM_COMMANDS: CommandResult[] = [
     keywords: "wallpaper background change cycle",
     execute: () => {
       execAsync(
-        `hyprctl -i 0 dispatch exec "${GLib.get_home_dir()}/.config/archion/cron/cycle-wallpaper.sh"`,
+        `"${GLib.get_home_dir()}/.config/ionix/cron/cycle-wallpaper.sh"`,
       )
     },
   },
