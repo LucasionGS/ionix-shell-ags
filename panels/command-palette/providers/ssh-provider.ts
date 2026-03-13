@@ -1,13 +1,13 @@
 import { execAsync } from "ags/process"
-import type { CommandProvider } from "./types"
-import { parseSshConfig } from "../../ssh/parse-ssh-config"
+import type { CommandProvider, CommandResult } from "./types"
+import { parseSshConfigAsync } from "../../ssh/parse-ssh-config"
 
 export const sshProvider: CommandProvider = {
   category: "ssh",
   label: "SSH",
   icon: "network-server-symbolic",
-  fetch() {
-    const hosts = parseSshConfig()
+  async fetch(): Promise<CommandResult[]> {
+    const hosts = await parseSshConfigAsync()
     return hosts.map((host) => ({
       id: `ssh:${host.name}`,
       category: "ssh" as const,

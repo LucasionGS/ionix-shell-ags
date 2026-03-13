@@ -14,37 +14,29 @@ import { scriptsProvider } from "./providers/scripts-provider"
 import { zoxideProvider } from "./providers/zoxide-provider"
 import { panelsProvider } from "./providers/panels-provider"
 
-const SYNC_PROVIDERS: CommandProvider[] = [
+const ALL_PROVIDERS: CommandProvider[] = [
   systemProvider,
+  panelsProvider,
   appsProvider,
   sshProvider,
   vpnProvider,
   scriptsProvider,
-  panelsProvider,
-]
-
-const ASYNC_PROVIDERS: CommandProvider[] = [
   windowsProvider,
   keybindsProvider,
   dockerProvider,
   zoxideProvider,
 ]
 
-async function gatherResults(): Promise<CommandResult[]> {
-  const syncResults = SYNC_PROVIDERS.flatMap((p) => {
-    try {
-      return p.fetch() as CommandResult[]
-    } catch {
-      return []
-    }
-  })
-
-  const asyncPromises = ASYNC_PROVIDERS.map((p) =>
-    Promise.resolve(p.fetch()).catch(() => [] as CommandResult[]),
-  )
-
-  const asyncResults = await Promise.all(asyncPromises)
-  return [...syncResults, ...asyncResults.flat()]
+function gatherResults(
+  append: (results: CommandResult[]) => void,
+): void {
+  for (const p of ALL_PROVIDERS) {
+    Promise.resolve(p.fetch())
+      .then((results) => {
+        if (results.length) append(results)
+      })
+      .catch(() => {})
+  }
 }
 
 export function CommandPalette(
@@ -57,7 +49,9 @@ export function CommandPalette(
 
   visible.subscribe(() => {
     if (visible()) {
-      gatherResults().then((results) => setAllResults(results))
+      gatherResults((results) =>
+        setAllResults((prev) => [...prev, ...results]),
+      )
     }
   })
 
@@ -72,6 +66,8 @@ export function CommandPalette(
       .slice(0, 30)
       .map((r) => r.result)
   })
+
+  let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
   let executionGuard = false
   function executeSelected() {
@@ -161,8 +157,11 @@ export function CommandPalette(
             class="cmd-search"
             placeholder_text="Type a command..."
             onChanged={(self) => {
-              setQuery(self.get_text())
-              setSelectedIndex(0)
+              if (debounceTimer) clearTimeout(debounceTimer)
+              debounceTimer = setTimeout(() => {
+                setQuery(self.get_text())
+                setSelectedIndex(0)
+              }, 150)
             }}
             $={(self) => {
               visible.subscribe(() => {

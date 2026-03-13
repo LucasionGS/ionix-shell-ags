@@ -1,4 +1,4 @@
-import { exec } from "ags/process"
+import { exec, execAsync } from "ags/process"
 
 export interface DockerPort {
   hostPort: string
@@ -64,6 +64,15 @@ function parsePorts(portsStr: string): DockerPort[] {
 export function listContainers(): DockerContainer[] {
   try {
     const output = exec(DOCKER_PS_CMD)
+    return parseContainerOutput(output)
+  } catch {
+    return []
+  }
+}
+
+export async function listContainersAsync(): Promise<DockerContainer[]> {
+  try {
+    const output = await execAsync(DOCKER_PS_CMD)
     return parseContainerOutput(output)
   } catch {
     return []

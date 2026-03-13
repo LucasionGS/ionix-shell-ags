@@ -1,4 +1,5 @@
 import { readFile } from "ags/file"
+import { execAsync } from "ags/process"
 import GLib from "gi://GLib"
 
 export interface SshHost {
@@ -10,16 +11,9 @@ export interface SshHost {
   group?: string
 }
 
-export function parseSshConfig(): SshHost[] {
-  const configPath = GLib.get_home_dir() + "/.ssh/config"
+const SSH_CONFIG_PATH = GLib.get_home_dir() + "/.ssh/config"
 
-  let content: string
-  try {
-    content = readFile(configPath)
-  } catch {
-    return []
-  }
-
+function parseSshConfigContent(content: string): SshHost[] {
   const hosts: SshHost[] = []
   let current: Partial<SshHost> | null = null
   let lastComment = ""
@@ -74,4 +68,21 @@ export function parseSshConfig(): SshHost[] {
   }
 
   return hosts
+}
+
+export function parseSshConfig(): SshHost[] {
+  try {
+    return parseSshConfigContent(readFile(SSH_CONFIG_PATH))
+  } catch {
+    return []
+  }
+}
+
+export async function parseSshConfigAsync(): Promise<SshHost[]> {
+  try {
+    const content = await execAsync(["cat", SSH_CONFIG_PATH])
+    return parseSshConfigContent(content)
+  } catch {
+    return []
+  }
 }

@@ -1,5 +1,5 @@
 import { readFile } from "ags/file"
-import { exec } from "ags/process"
+import { exec, execAsync } from "ags/process"
 import GLib from "gi://GLib"
 
 export interface VpnConnection {
@@ -11,23 +11,10 @@ export interface VpnConnection {
 }
 
 const CONFIG_DIR = GLib.get_home_dir() + "/.config/oc"
+const CONNECTIONS_PATH = CONFIG_DIR + "/connections.txt"
+const PRIMARY_PATH = CONFIG_DIR + "/primary.txt"
 
-export function parseVpnConnections(): VpnConnection[] {
-  const connectionsPath = CONFIG_DIR + "/connections.txt"
-  const primaryPath = CONFIG_DIR + "/primary.txt"
-
-  let primary = ""
-  try {
-    primary = readFile(primaryPath).trim()
-  } catch {}
-
-  let content: string
-  try {
-    content = readFile(connectionsPath)
-  } catch {
-    return []
-  }
-
+function parseVpnContent(content: string, primary: string): VpnConnection[] {
   const connections: VpnConnection[] = []
 
   for (const line of content.split("\n")) {
@@ -48,6 +35,38 @@ export function parseVpnConnections(): VpnConnection[] {
   }
 
   return connections
+}
+
+export function parseVpnConnections(): VpnConnection[] {
+  let primary = ""
+  try {
+    primary = readFile(PRIMARY_PATH).trim()
+  } catch {}
+
+  let content: string
+  try {
+    content = readFile(CONNECTIONS_PATH)
+  } catch {
+    return []
+  }
+
+  return parseVpnContent(content, primary)
+}
+
+export async function parseVpnConnectionsAsync(): Promise<VpnConnection[]> {
+  let primary = ""
+  try {
+    primary = (await execAsync(["cat", PRIMARY_PATH])).trim()
+  } catch {}
+
+  let content: string
+  try {
+    content = await execAsync(["cat", CONNECTIONS_PATH])
+  } catch {
+    return []
+  }
+
+  return parseVpnContent(content, primary)
 }
 
 export function getVpnStatus(): boolean {

@@ -1,13 +1,13 @@
 import { execAsync } from "ags/process"
-import type { CommandProvider } from "./types"
-import { parseVpnConnections } from "../../vpn/parse-vpn-config"
+import type { CommandProvider, CommandResult } from "./types"
+import { parseVpnConnectionsAsync } from "../../vpn/parse-vpn-config"
 
 export const vpnProvider: CommandProvider = {
   category: "vpn",
   label: "VPN",
   icon: "network-vpn-symbolic",
-  fetch() {
-    const connections = parseVpnConnections()
+  async fetch(): Promise<CommandResult[]> {
+    const connections = await parseVpnConnectionsAsync()
     return connections.map((conn) => ({
       id: `vpn:${conn.name}`,
       category: "vpn" as const,

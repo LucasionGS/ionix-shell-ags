@@ -1,13 +1,13 @@
 import { execAsync } from "ags/process"
-import type { CommandProvider } from "./types"
-import { listContainers, formatPorts } from "../../docker/docker-utils"
+import type { CommandProvider, CommandResult } from "./types"
+import { listContainersAsync, formatPorts } from "../../docker/docker-utils"
 
 export const dockerProvider: CommandProvider = {
   category: "docker",
   label: "Docker",
   icon: "system-run-symbolic",
-  fetch() {
-    const containers = listContainers()
+  async fetch(): Promise<CommandResult[]> {
+    const containers = await listContainersAsync()
     return containers.map((c) => {
       const isRunning = c.state === "running"
       const action = isRunning ? "Stop" : "Start"

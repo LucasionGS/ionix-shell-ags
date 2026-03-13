@@ -1,12 +1,13 @@
 import Gio from "gi://Gio"
 import Gdk from "gi://Gdk"
-import type { CommandProvider } from "./types"
+import type { CommandProvider, CommandResult } from "./types"
 
 export const appsProvider: CommandProvider = {
   category: "app",
   label: "Applications",
   icon: "application-x-executable-symbolic",
-  fetch() {
+  async fetch(): Promise<CommandResult[]> {
+    await new Promise((r) => setTimeout(r, 0))
     const apps = Gio.AppInfo.get_all()
     return apps
       .filter((a) => a.should_show())

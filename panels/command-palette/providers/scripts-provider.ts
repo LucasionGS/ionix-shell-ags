@@ -1,28 +1,19 @@
 import { execAsync } from "ags/process"
-import Gio from "gi://Gio"
 import GLib from "gi://GLib"
 import type { CommandProvider, CommandResult } from "./types"
 
-function listScripts(dirPath: string): CommandResult[] {
-  const results: CommandResult[] = []
+async function listScripts(dirPath: string): Promise<CommandResult[]> {
   try {
-    const dir = Gio.File.new_for_path(dirPath)
-    const enumerator = dir.enumerate_children(
-      "standard::name,standard::type",
-      Gio.FileQueryInfoFlags.NONE,
-      null,
-    )
-    let info: Gio.FileInfo | null
-    while ((info = enumerator.next_file(null)) !== null) {
-      const name = info.get_name()
-      if (
-        info.get_file_type() === Gio.FileType.REGULAR &&
-        !name.startsWith(".")
-      ) {
+    const output = await execAsync(["ls", "-1", dirPath])
+    return output
+      .trim()
+      .split("\n")
+      .filter((name) => name && !name.startsWith("."))
+      .map((name) => {
         const fullPath = `${dirPath}/${name}`
-        results.push({
+        return {
           id: `script:${fullPath}`,
-          category: "script",
+          category: "script" as const,
           name: name.replace(/\.(sh|py|fish)$/, ""),
           description: fullPath,
           icon: "utilities-terminal-symbolic",
@@ -30,22 +21,23 @@ function listScripts(dirPath: string): CommandResult[] {
           execute: () => {
             execAsync(fullPath)
           },
-        })
-      }
-    }
-  } catch {}
-  return results
+        }
+      })
+  } catch {
+    return []
+  }
 }
 
 export const scriptsProvider: CommandProvider = {
   category: "script",
   label: "Scripts",
   icon: "utilities-terminal-symbolic",
-  fetch() {
+  async fetch(): Promise<CommandResult[]> {
     const home = GLib.get_home_dir()
-    return [
-      ...listScripts(`${home}/.config/archion/scripts`),
-      ...listScripts(`${home}/.local/bin`),
-    ]
+    const [a, b] = await Promise.all([
+      listScripts(`${home}/.config/archion/scripts`),
+      listScripts(`${home}/.local/bin`),
+    ])
+    return [...a, ...b]
   },
 }
