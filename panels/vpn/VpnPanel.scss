@@ -14,6 +14,38 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
 }
 
+// Tab bar
+.vpn-tab-bar {
+  padding: 12px 24px 0;
+
+  .vpn-tab-btn {
+    all: unset;
+    padding: 8px 16px;
+    border-radius: $radius $radius 0 0;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: color.adjust($fg, $alpha: -0.5);
+    border-bottom: 2px solid transparent;
+    transition: all 150ms ease;
+    margin-right: 4px;
+
+    icon {
+      margin-right: 6px;
+    }
+
+    &:hover {
+      color: color.adjust($fg, $alpha: -0.2);
+      background-color: color.adjust($fg, $alpha: -0.95);
+    }
+
+    &.active {
+      color: $accent;
+      border-bottom-color: $accent;
+      background-color: color.adjust($accent, $alpha: -0.92);
+    }
+  }
+}
+
 .vpn-header {
   padding: 20px 24px 14px;
   border-bottom: 1px solid color.adjust($fg, $alpha: -0.9);
@@ -208,4 +240,80 @@
 .vpn-footer-keys {
   font-size: 0.75em;
   color: color.adjust($fg, $alpha: -0.6);
+}
+
+// Windscribe-specific
+.ws-info-row {
+  margin-top: 10px;
+
+  .vpn-disconnect-btn {
+    margin-top: 0;
+  }
+}
+
+.ws-bandwidth {
+  font-size: 0.7em;
+  color: color.adjust($secondary, $alpha: -0.3);
+  padding: 2px 8px;
+  border-radius: 8px;
+  background-color: color.adjust($secondary, $alpha: -0.88);
+  margin-left: 6px;
+}
+
+.ws-data-usage {
+  font-size: 0.8em;
+  color: color.adjust($fg, $alpha: -0.4);
+  margin-left: 8px;
+}
+
+.ws-firewall-btn {
+  all: unset;
+  padding: 6px 12px;
+  border-radius: $radius;
+  font-size: 0.8em;
+  font-weight: 600;
+  transition: all 150ms ease;
+  margin-left: 8px;
+
+  icon {
+    margin-right: 6px;
+  }
+
+  &.on {
+    background-color: rgba(76, 175, 80, 0.2);
+    border: 1px solid rgba(76, 175, 80, 0.5);
+
+    label, icon {
+      color: #66bb6a;
+    }
+  }
+
+  &.off {
+    background-color: color.adjust($fg, $alpha: -0.92);
+    border: 1px solid color.adjust($fg, $alpha: -0.85);
+
+    label, icon {
+      color: color.adjust($fg, $alpha: -0.4);
+    }
+  }
+
+  &:hover {
+    &.on {
+      background-color: rgba(76, 175, 80, 0.3);
+    }
+
+    &.off {
+      background-color: color.adjust($fg, $alpha: -0.88);
+    }
+  }
+}
+
+.ws-not-logged-in {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: $radius;
+  font-size: 0.85em;
+  color: color.adjust($error, $lightness: 20%);
+  background-color: color.adjust($error, $alpha: -0.88);
+  border: 1px solid color.adjust($error, $alpha: -0.7);
 }
