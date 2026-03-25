@@ -5,6 +5,7 @@
 @use "panels/command-palette/CommandPalette";
 @use "panels/booru/BooruPanel";
 @use "panels/automation/AutomationPanel";
+@use "panels/hue/HuePanel";
 
 // Global window reset for overlay panels
 window {

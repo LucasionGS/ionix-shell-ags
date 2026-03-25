@@ -1,0 +1,682 @@
+@use "sass:color";
+@use "../../variables" as *;
+
+.hue-panel-backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.hue-panel {
+  min-width: 720px;
+  border-radius: 16px;
+  padding: 0;
+  background-color: color.adjust($bg, $lightness: 3%);
+  border: 1px solid color.adjust($fg, $alpha: -0.9);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
+}
+
+// Tab bar
+.hue-tab-bar {
+  padding: 12px 24px 0;
+
+  .hue-tab-btn {
+    all: unset;
+    padding: 8px 16px;
+    border-radius: $radius $radius 0 0;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: color.adjust($fg, $alpha: -0.5);
+    border-bottom: 2px solid transparent;
+    transition: all 150ms ease;
+    margin-right: 4px;
+
+    icon {
+      margin-right: 6px;
+    }
+
+    &:hover {
+      color: color.adjust($fg, $alpha: -0.2);
+      background-color: color.adjust($fg, $alpha: -0.95);
+    }
+
+    &.active {
+      color: $accent;
+      border-bottom-color: $accent;
+      background-color: color.adjust($accent, $alpha: -0.92);
+    }
+  }
+}
+
+// Header
+.hue-header {
+  padding: 20px 24px 14px;
+  border-bottom: 1px solid color.adjust($fg, $alpha: -0.9);
+}
+
+.hue-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: $accent;
+}
+
+.hue-count {
+  font-size: 0.85em;
+  color: color.adjust($fg, $alpha: -0.4);
+  margin-right: 8px;
+}
+
+.hue-refresh-btn,
+.hue-add-btn {
+  all: unset;
+  padding: 4px 8px;
+  border-radius: $radius;
+  transition: all 150ms ease;
+
+  icon {
+    color: color.adjust($fg, $alpha: -0.4);
+  }
+
+  &:hover {
+    background-color: color.adjust($fg, $alpha: -0.9);
+
+    icon {
+      color: $fg;
+    }
+  }
+}
+
+// Search
+.hue-search {
+  background-color: color.adjust($bg, $lightness: 6%);
+  border: 1px solid color.adjust($fg, $alpha: -0.85);
+  border-radius: $radius;
+  padding: 10px 14px;
+  margin: 12px 24px 0;
+  color: $fg;
+  font-size: 1em;
+  caret-color: $accent;
+
+  &:focus {
+    border-color: color.adjust($accent, $alpha: -0.4);
+    box-shadow: 0 0 0 2px color.adjust($accent, $alpha: -0.75);
+  }
+}
+
+// List
+.hue-list-scroll {
+  min-height: 450px;
+}
+
+.hue-list {
+  padding: 8px;
+}
+
+// Light card
+.hue-light-card {
+  margin: 2px 4px;
+  padding: 10px 16px;
+  border-radius: $radius;
+  border: 1px solid transparent;
+  border-left: 3px solid transparent;
+  transition: all 150ms ease;
+
+  &.on {
+    border-left-color: $accent;
+  }
+
+  &.off {
+    border-left-color: color.adjust($fg, $alpha: -0.8);
+    opacity: 0.7;
+  }
+
+  &.selected {
+    background-color: color.adjust($accent, $alpha: -0.85);
+    border-color: color.adjust($accent, $alpha: -0.65);
+    border-left-color: $accent;
+
+    &.off {
+      border-left-color: color.adjust($fg, $alpha: -0.5);
+    }
+  }
+
+  &:hover {
+    background-color: color.adjust($accent, $alpha: -0.9);
+  }
+}
+
+.hue-light-header {
+  margin-bottom: 4px;
+}
+
+.hue-light-swatch {
+  margin-right: 10px;
+}
+
+.hue-light-name {
+  font-size: 1em;
+  font-weight: 600;
+  color: $fg;
+}
+
+// Toggle button
+.hue-toggle {
+  all: unset;
+  padding: 4px 10px;
+  border-radius: $radius;
+  font-size: 0.8em;
+  font-weight: 600;
+  transition: all 150ms ease;
+
+  &.on {
+    background-color: rgba(76, 175, 80, 0.2);
+    border: 1px solid rgba(76, 175, 80, 0.5);
+
+    label {
+      color: #66bb6a;
+    }
+  }
+
+  &.off {
+    background-color: color.adjust($fg, $alpha: -0.92);
+    border: 1px solid color.adjust($fg, $alpha: -0.85);
+
+    label {
+      color: color.adjust($fg, $alpha: -0.4);
+    }
+  }
+
+  &:hover {
+    &.on {
+      background-color: rgba(76, 175, 80, 0.3);
+    }
+
+    &.off {
+      background-color: color.adjust($fg, $alpha: -0.88);
+    }
+  }
+}
+
+// Brightness row
+.hue-brightness-row {
+  padding: 4px 12px;
+
+  icon {
+    color: color.adjust($fg, $alpha: -0.4);
+    margin-right: 8px;
+  }
+
+  slider {
+    margin: 0 8px;
+
+    trough {
+      min-height: 4px;
+      border-radius: 2px;
+      background-color: color.adjust($fg, $alpha: -0.85);
+    }
+
+    highlight {
+      min-height: 4px;
+      border-radius: 2px;
+      background-color: $accent;
+    }
+
+    slider {
+      min-width: 16px;
+      min-height: 16px;
+      border-radius: 50%;
+      background-color: $accent;
+      border: 2px solid color.adjust($accent, $lightness: 20%);
+    }
+  }
+}
+
+.hue-brightness-value {
+  font-size: 0.8em;
+  color: color.adjust($fg, $alpha: -0.4);
+  min-width: 30px;
+}
+
+// Color button
+.hue-color-row {
+  padding: 4px 12px;
+}
+
+.hue-color-btn {
+  all: unset;
+  padding: 4px 10px;
+  border-radius: $radius;
+  font-size: 0.8em;
+  background-color: color.adjust($fg, $alpha: -0.92);
+  border: 1px solid color.adjust($fg, $alpha: -0.85);
+  transition: all 150ms ease;
+
+  icon {
+    margin-right: 6px;
+    color: color.adjust($fg, $alpha: -0.3);
+  }
+
+  label {
+    color: color.adjust($fg, $alpha: -0.3);
+  }
+
+  &:hover {
+    background-color: color.adjust($fg, $alpha: -0.88);
+    border-color: color.adjust($accent, $alpha: -0.5);
+  }
+}
+
+// Color picker — right side panel
+.hue-color-picker-side {
+  min-width: 300px;
+  border-left: 1px solid color.adjust($fg, $alpha: -0.9);
+  padding: 16px;
+}
+
+.hue-color-picker-header {
+  margin-bottom: 8px;
+
+  label {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: $accent;
+  }
+}
+
+.hue-color-picker-close {
+  all: unset;
+  padding: 4px;
+  border-radius: $radius;
+
+  icon {
+    color: color.adjust($fg, $alpha: -0.4);
+  }
+
+  &:hover {
+    background-color: color.adjust($fg, $alpha: -0.9);
+  }
+}
+
+.hue-color-chooser-container {
+  min-height: 280px;
+  margin: 8px 0;
+}
+
+.hue-color-apply {
+  all: unset;
+  padding: 8px 16px;
+  border-radius: $radius;
+  background-color: color.adjust($accent, $alpha: -0.85);
+  border: 1px solid color.adjust($accent, $alpha: -0.6);
+  transition: all 150ms ease;
+  margin-top: 8px;
+
+  icon {
+    margin-right: 8px;
+    color: $accent;
+  }
+
+  label {
+    color: $accent;
+    font-weight: 600;
+  }
+
+  &:hover {
+    background-color: color.adjust($accent, $alpha: -0.7);
+  }
+}
+
+// Group card
+.hue-group-card,
+.hue-scene-card {
+  margin: 2px 4px;
+  padding: 8px;
+  border-radius: $radius;
+  border: 1px solid color.adjust($fg, $alpha: -0.9);
+  transition: all 150ms ease;
+
+  &:hover {
+    border-color: color.adjust($fg, $alpha: -0.8);
+  }
+}
+
+.hue-group-header,
+.hue-scene-header {
+  button {
+    all: unset;
+    padding: 4px 8px;
+    border-radius: $radius;
+    transition: all 150ms ease;
+
+    icon {
+      color: color.adjust($fg, $alpha: -0.4);
+    }
+
+    &:hover {
+      background-color: color.adjust($fg, $alpha: -0.9);
+
+      icon {
+        color: $fg;
+      }
+    }
+  }
+}
+
+.hue-group-expand,
+.hue-scene-expand {
+  all: unset;
+
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+.hue-group-name,
+.hue-scene-name {
+  font-size: 1em;
+  font-weight: 600;
+  color: $fg;
+  margin-left: 8px;
+}
+
+.hue-group-count,
+.hue-scene-count {
+  font-size: 0.8em;
+  color: color.adjust($fg, $alpha: -0.5);
+  margin-right: 8px;
+}
+
+.hue-group-delete,
+.hue-scene-delete {
+  icon {
+    color: color.adjust($error, $lightness: 20%);
+  }
+}
+
+// Expanded group lights
+.hue-group-lights {
+  padding: 4px 0 4px 28px;
+}
+
+.hue-group-light-item {
+  padding: 4px 8px;
+  border-radius: $radius;
+
+  label {
+    font-size: 0.9em;
+    color: color.adjust($fg, $alpha: -0.3);
+  }
+
+  .hue-group-light-remove {
+    all: unset;
+    padding: 2px 6px;
+    border-radius: $radius;
+    opacity: 0.5;
+    transition: opacity 150ms ease;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+// Scene commands
+.hue-scene-commands {
+  padding: 4px 0 4px 28px;
+}
+
+.hue-scene-cmd-item {
+  padding: 4px 8px;
+  border-radius: $radius;
+}
+
+.hue-scene-cmd-index {
+  font-size: 0.8em;
+  color: color.adjust($fg, $alpha: -0.5);
+  margin-right: 8px;
+  min-width: 20px;
+}
+
+.hue-scene-cmd-text {
+  font-size: 0.85em;
+  color: color.adjust($fg, $alpha: -0.2);
+  font-family: monospace;
+}
+
+.hue-scene-cmd-remove {
+  all: unset;
+  padding: 2px 6px;
+  border-radius: $radius;
+  opacity: 0.5;
+  transition: opacity 150ms ease;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.hue-scene-add-cmd {
+  all: unset;
+  padding: 6px 12px;
+  border-radius: $radius;
+  margin-top: 4px;
+  border: 1px dashed color.adjust($fg, $alpha: -0.8);
+  transition: all 150ms ease;
+
+  icon {
+    margin-right: 6px;
+    color: color.adjust($fg, $alpha: -0.5);
+  }
+
+  label {
+    font-size: 0.85em;
+    color: color.adjust($fg, $alpha: -0.4);
+  }
+
+  &:hover {
+    border-color: color.adjust($accent, $alpha: -0.5);
+    background-color: color.adjust($accent, $alpha: -0.92);
+
+    icon, label {
+      color: $accent;
+    }
+  }
+}
+
+.hue-scene-play {
+  icon {
+    color: #66bb6a;
+  }
+}
+
+// Command builder
+.hue-cmd-builder {
+  padding: 8px 0;
+  margin-top: 4px;
+  border-top: 1px solid color.adjust($fg, $alpha: -0.9);
+}
+
+.hue-cmd-builder-header {
+  margin-bottom: 8px;
+
+  label {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: $accent;
+  }
+}
+
+.hue-cmd-type-bar {
+  margin-bottom: 8px;
+
+  .hue-type-btn {
+    all: unset;
+    padding: 4px 12px;
+    border-radius: $radius;
+    font-size: 0.8em;
+    font-weight: 600;
+    margin-right: 4px;
+    color: color.adjust($fg, $alpha: -0.5);
+    background-color: color.adjust($fg, $alpha: -0.92);
+    border: 1px solid color.adjust($fg, $alpha: -0.85);
+    transition: all 150ms ease;
+
+    &.active {
+      color: $accent;
+      background-color: color.adjust($accent, $alpha: -0.85);
+      border-color: color.adjust($accent, $alpha: -0.55);
+    }
+
+    &:hover:not(.active) {
+      background-color: color.adjust($fg, $alpha: -0.88);
+    }
+  }
+}
+
+.hue-cmd-color-fields {
+  margin-bottom: 8px;
+}
+
+.hue-input-sm {
+  background-color: color.adjust($bg, $lightness: 6%);
+  border: 1px solid color.adjust($fg, $alpha: -0.85);
+  border-radius: $radius;
+  padding: 6px 10px;
+  color: $fg;
+  font-size: 0.9em;
+  min-width: 50px;
+  margin-right: 4px;
+  caret-color: $accent;
+
+  &:focus {
+    border-color: color.adjust($accent, $alpha: -0.4);
+  }
+}
+
+// Editor (for groups/scenes creation)
+.hue-editor {
+  padding: 12px 24px;
+  border-bottom: 1px solid color.adjust($fg, $alpha: -0.9);
+}
+
+.hue-editor-header {
+  margin-bottom: 8px;
+
+  label {
+    font-size: 1em;
+    font-weight: 600;
+    color: $accent;
+  }
+}
+
+.hue-editor-close {
+  all: unset;
+  padding: 4px;
+  border-radius: $radius;
+
+  icon {
+    color: color.adjust($fg, $alpha: -0.4);
+  }
+
+  &:hover {
+    background-color: color.adjust($fg, $alpha: -0.9);
+  }
+}
+
+.hue-editor-input {
+  background-color: color.adjust($bg, $lightness: 6%);
+  border: 1px solid color.adjust($fg, $alpha: -0.85);
+  border-radius: $radius;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  color: $fg;
+  font-size: 0.9em;
+  caret-color: $accent;
+
+  &:focus {
+    border-color: color.adjust($accent, $alpha: -0.4);
+  }
+}
+
+.hue-editor-label {
+  font-size: 0.85em;
+  color: color.adjust($fg, $alpha: -0.4);
+  margin-bottom: 4px;
+}
+
+.hue-editor-list-scroll {
+  min-height: 220px;
+}
+
+.hue-editor-list {
+  padding: 4px;
+}
+
+.hue-select-item {
+  all: unset;
+  padding: 8px 12px;
+  border-radius: $radius;
+  border: 1px solid transparent;
+  transition: all 150ms ease;
+  margin: 1px 0;
+
+  label {
+    font-size: 0.9em;
+    color: color.adjust($fg, $alpha: -0.2);
+  }
+
+  icon {
+    color: $accent;
+  }
+
+  &:hover {
+    background-color: color.adjust($fg, $alpha: -0.92);
+  }
+
+  &.selected {
+    background-color: color.adjust($accent, $alpha: -0.88);
+    border-color: color.adjust($accent, $alpha: -0.65);
+
+    label {
+      color: $accent;
+    }
+  }
+}
+
+.hue-editor-save {
+  all: unset;
+  padding: 8px 16px;
+  border-radius: $radius;
+  background-color: color.adjust($accent, $alpha: -0.85);
+  border: 1px solid color.adjust($accent, $alpha: -0.6);
+  transition: all 150ms ease;
+  margin-top: 8px;
+
+  label {
+    color: $accent;
+    font-weight: 600;
+    font-size: 0.9em;
+  }
+
+  &:hover {
+    background-color: color.adjust($accent, $alpha: -0.7);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+  }
+}
+
+// Footer
+.hue-footer {
+  padding: 12px 24px;
+  border-top: 1px solid color.adjust($fg, $alpha: -0.9);
+}
+
+.hue-footer-hint {
+  font-size: 0.8em;
+  color: color.adjust($accent, $alpha: -0.3);
+}
+
+.hue-footer-keys {
+  font-size: 0.75em;
+  color: color.adjust($fg, $alpha: -0.6);
+}
