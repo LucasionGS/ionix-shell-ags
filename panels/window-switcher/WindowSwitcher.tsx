@@ -2,6 +2,7 @@ import { Astal, Gtk, Gdk } from "ags/gtk3"
 import { execAsync } from "ags/process"
 import { type Accessor, createState, createMemo, For } from "gnim"
 import { registerPanelAction } from "../panel-action"
+import { registerSettings } from "../settings/settings-store"
 import GLib from "gi://GLib"
 import GdkPixbuf from "gi://GdkPixbuf"
 import { clients as cachedClients, type HyprClient } from "./hypr-clients"
@@ -10,8 +11,41 @@ import { clients as cachedClients, type HyprClient } from "./hypr-clients"
 declare const setTimeout: (fn: () => void, ms: number) => unknown
 
 const PREVIEW_DIR = `${GLib.get_user_cache_dir()}/ionix-shell/alttab`
-const PREVIEW_W = 160
-const PREVIEW_H = 90
+
+const swSettings = registerSettings(
+  "window-switcher",
+  "Window Switcher",
+  "focus-windows-symbolic",
+  {
+    maxColumns: {
+      type: "number" as const,
+      label: "Max Columns",
+      description: "Maximum window thumbnails per row",
+      default: 7,
+      min: 1,
+      max: 20,
+      step: 1,
+    },
+    previewWidth: {
+      type: "number" as const,
+      label: "Preview Width",
+      description: "Width of each window thumbnail in pixels",
+      default: 160,
+      min: 60,
+      max: 400,
+      step: 10,
+    },
+    previewHeight: {
+      type: "number" as const,
+      label: "Preview Height",
+      description: "Height of each window thumbnail in pixels",
+      default: 90,
+      min: 40,
+      max: 280,
+      step: 10,
+    },
+  },
+)
 
 function ensurePreviewDir() {
   execAsync(["mkdir", "-p", PREVIEW_DIR]).catch(() => {})
@@ -25,8 +59,8 @@ async function capturePreview(
     await execAsync(["grim", "-t", "png", "-l", "0", "-w", address, path])
     const pb = GdkPixbuf.Pixbuf.new_from_file_at_scale(
       path,
-      PREVIEW_W,
-      PREVIEW_H,
+      swSettings.get.previewWidth(),
+      swSettings.get.previewHeight(),
       true,
     )
     return pb
@@ -57,8 +91,8 @@ function WindowItem(props: {
       <box vertical>
         <box
           class="alttab-preview"
-          width_request={PREVIEW_W}
-          height_request={PREVIEW_H}
+          width_request={createMemo(() => swSettings.get.previewWidth())}
+          height_request={createMemo(() => swSettings.get.previewHeight())}
         >
           <label
             label="..."
@@ -246,7 +280,7 @@ export function WindowSwitcher(
           />
           <Gtk.FlowBox
             halign={Gtk.Align.CENTER}
-            max_children_per_line={7}
+            max_children_per_line={createMemo(() => swSettings.get.maxColumns())}
             min_children_per_line={1}
             selection_mode={Gtk.SelectionMode.NONE}
             homogeneous

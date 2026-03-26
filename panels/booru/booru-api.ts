@@ -69,13 +69,14 @@ export async function loadPixbuf(
   }
 }
 
-export async function downloadImage(post: BooruPost): Promise<boolean> {
+export async function downloadImage(post: BooruPost, downloadDir?: string): Promise<boolean> {
   try {
-    GLib.mkdir_with_parents(DOWNLOAD_DIR, 0o755)
+    const dir = downloadDir ?? DOWNLOAD_DIR
+    GLib.mkdir_with_parents(dir, 0o755)
 
     const ext = post.file_url.split(".").pop() ?? "jpg"
     const filename = `${post.id}_${post.md5}.${ext}`
-    const filepath = GLib.build_filenamev([DOWNLOAD_DIR, filename])
+    const filepath = GLib.build_filenamev([dir, filename])
 
     const destFile = Gio.File.new_for_path(filepath)
     if (destFile.query_exists(null)) return true

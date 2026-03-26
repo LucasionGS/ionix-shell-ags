@@ -7,6 +7,8 @@ import { getEngine } from "./panels/automation/engine"
 import { registerPanelToggle } from "./panels/panel-toggle"
 import { invokePanelAction } from "./panels/panel-action"
 import { DesktopPanel } from "./panels/desktop/DesktopPanel"
+// Import general settings early so they're registered before the settings panel renders
+import "./panels/settings/general-settings"
 
 // Create state for each panel before app.start so both main() and
 // requestHandler() can reference them.

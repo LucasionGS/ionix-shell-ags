@@ -7,6 +7,7 @@ import { AutomationPanel } from "./automation/AutomationPanel"
 import { BooruPanel } from "./booru/BooruPanel"
 import { HuePanel } from "./hue/HuePanel"
 import { WindowSwitcher } from "./window-switcher/WindowSwitcher"
+import { SettingsPanel } from "./settings/SettingsPanel"
 import { Astal } from "ags/gtk3"
 
 const { TOP, BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor
@@ -75,6 +76,14 @@ const panels: PanelDefinition[] = [
     exclusivity: Astal.Exclusivity.NORMAL,
     layer: Astal.Layer.OVERLAY,
     setup: WindowSwitcher,
+  },
+  {
+    id: "settings",
+    anchor: TOP | BOTTOM | LEFT | RIGHT,
+    keymode: Astal.Keymode.ON_DEMAND,
+    exclusivity: Astal.Exclusivity.NORMAL,
+    layer: Astal.Layer.OVERLAY,
+    setup: SettingsPanel,
   },
 ]
 

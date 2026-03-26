@@ -2,6 +2,7 @@ import { Astal, Gtk, Gdk } from "ags/gtk3"
 import { execAsync } from "ags/process"
 import { type Accessor, createState, createMemo, For } from "gnim"
 import { parseSshConfig, type SshHost } from "./parse-ssh-config"
+import { generalSettings } from "../settings/general-settings"
 
 export function SshPanel(visible: Accessor<boolean>, hide: () => void) {
   const hosts = parseSshConfig()
@@ -30,7 +31,12 @@ export function SshPanel(visible: Accessor<boolean>, hide: () => void) {
       connectionStarted = false;
     }, 1000);
     hide()
-    execAsync(["kitty", "kitten", "ssh", host.name])
+    const term = generalSettings.get.terminal()
+    if (term === "kitty") {
+      execAsync(["kitty", "kitten", "ssh", host.name])
+    } else {
+      execAsync([term, "-e", "ssh", host.name])
+    }
   }
 
   let unbounce = false;

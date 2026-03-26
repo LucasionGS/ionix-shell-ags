@@ -1,5 +1,6 @@
 import { Astal, Gtk, Gdk } from "ags/gtk3"
 import { type Accessor, createState, createMemo, For } from "gnim"
+import GLib from "gi://GLib"
 import GdkPixbuf from "gi://GdkPixbuf"
 import {
   searchPosts,
@@ -7,6 +8,33 @@ import {
   downloadImage,
   type BooruPost,
 } from "./booru-api"
+import { registerSettings } from "../settings/settings-store"
+
+const booruSettings = registerSettings(
+  "booru",
+  "Booru",
+  "image-x-generic-symbolic",
+  {
+    defaultTags: {
+      type: "string" as const,
+      label: "Default Tags",
+      description: "Tags pre-filled when the panel opens",
+      default: "",
+    },
+    defaultRating: {
+      type: "select" as const,
+      label: "Default Rating",
+      default: "safe",
+      options: ["safe", "questionable", "explicit", "all"],
+    },
+    downloadDir: {
+      type: "string" as const,
+      label: "Download Directory",
+      description: "Where downloaded images are saved",
+      default: `${GLib.get_home_dir()}/Pictures/Booru`,
+    },
+  },
+)
 
 const RATINGS = [
   { label: "Safe", tag: "rating:safe" },
@@ -29,7 +57,7 @@ function BooruCard(post: BooruPost) {
   function doDownload() {
     if (downloading() || downloaded()) return
     setDownloading(true)
-    downloadImage(post).then((ok) => {
+    downloadImage(post, booruSettings.get.downloadDir()).then((ok) => {
       setDownloading(false)
       if (ok) setDownloaded(true)
     })
@@ -108,10 +136,12 @@ function BooruCard(post: BooruPost) {
 
 export function BooruPanel(visible: Accessor<boolean>, hide: () => void) {
   const [posts, setPosts] = createState<BooruPost[]>([])
-  const [query, setQuery] = createState("")
+  const [query, setQuery] = createState(booruSettings.get.defaultTags())
   const [page, setPage] = createState(1)
   const [loading, setLoading] = createState(false)
-  const [ratingIdx, setRatingIdx] = createState(0)
+  const defRating = booruSettings.get.defaultRating()
+  const defRatingIdx = Math.max(0, RATINGS.findIndex((r) => r.label.toLowerCase() === defRating))
+  const [ratingIdx, setRatingIdx] = createState(defRatingIdx)
 
   function doSearch(newPage?: number) {
     const p = newPage ?? 1

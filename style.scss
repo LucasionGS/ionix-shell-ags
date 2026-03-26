@@ -8,6 +8,7 @@
 @use "panels/hue/HuePanel";
 @use "panels/window-switcher/WindowSwitcher";
 @use "panels/desktop/DesktopPanel";
+@use "panels/settings/SettingsPanel";
 
 // Global window reset for overlay panels
 window {

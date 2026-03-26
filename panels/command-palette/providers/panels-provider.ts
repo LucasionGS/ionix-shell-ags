@@ -37,7 +37,13 @@ const PANELS: { id: string; name: string; icon: string; keywords: string }[] = [
     name: "Philips Hue Panel",
     icon: "lightbulb-symbolic",
     keywords: "hue panel philips hue lights control",
-  }
+  },
+  {
+    id: "settings",
+    name: "Settings",
+    icon: "settings-symbolic",
+    keywords: "settings panel preferences options configuration",
+  },
 ]
 
 const PANEL_COMMANDS: CommandResult[] = PANELS.map((p) => ({

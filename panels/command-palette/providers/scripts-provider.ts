@@ -1,6 +1,7 @@
 import { execAsync } from "ags/process"
 import GLib from "gi://GLib"
 import type { CommandProvider, CommandResult } from "./types"
+import { generalSettings } from "../../settings/general-settings"
 
 async function listScripts(dirPath: string): Promise<CommandResult[]> {
   try {
@@ -36,7 +37,7 @@ export const scriptsProvider: CommandProvider = {
     const home = GLib.get_home_dir()
     const [a, b] = await Promise.all([
       listScripts(`${home}/.config/archion/scripts`),
-      listScripts(`${home}/.local/bin`),
+      listScripts(generalSettings.get.scriptsDir()),
     ])
     return [...a, ...b]
   },

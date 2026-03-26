@@ -4,9 +4,30 @@ import Gio from "gi://Gio"
 import GioUnix from "gi://GioUnix"
 import GLib from "gi://GLib"
 import GdkPixbuf from "gi://GdkPixbuf"
+import { registerSettings } from "../settings/settings-store"
 
 const DESKTOP_DIR = `${GLib.get_home_dir()}/Desktop`
-const ICON_SIZE = 48
+
+const desktopSettings = registerSettings(
+  "desktop",
+  "Desktop",
+  "user-desktop-symbolic",
+  {
+    iconSize: {
+      type: "number" as const,
+      label: "Icon Size",
+      description: "Size of desktop icons in pixels",
+      default: 48,
+      min: 16,
+      max: 96,
+      step: 8,
+    },
+  },
+)
+
+function iconSize() {
+  return desktopSettings.get.iconSize() as number
+}
 
 interface DesktopEntry {
   name: string
@@ -21,11 +42,11 @@ function getIconPixbuf(
   const theme = Gtk.IconTheme.get_default()
   try {
     if (iconObj) {
-      const info = theme.lookup_by_gicon(iconObj, ICON_SIZE, 0)
+      const info = theme.lookup_by_gicon(iconObj, iconSize(), 0)
       if (info) return info.load_icon()
     }
-    const info = theme.lookup_icon(fallback, ICON_SIZE, 0)
-    if (info) return info.load_icon()
+    const info2 = theme.lookup_icon(fallback, iconSize(), 0)
+    if (info2) return info2.load_icon()
   } catch {
     // fall through
   }
@@ -79,8 +100,8 @@ function loadDesktopEntries(): DesktopEntry[] {
           try {
             icon = GdkPixbuf.Pixbuf.new_from_file_at_scale(
               file.get_path()!,
-              ICON_SIZE,
-              ICON_SIZE,
+              iconSize(),
+              iconSize(),
               true,
             )
           } catch {
@@ -149,6 +170,11 @@ export function DesktopPanel() {
       setEntries(loadDesktopEntries())
     })
   } catch {}
+
+  // Reload when icon size changes
+  desktopSettings.get.iconSize.subscribe(() => {
+    setEntries(loadDesktopEntries())
+  })
 
   return (
     <box class="desktop-grid" halign={Gtk.Align.START} valign={Gtk.Align.START} hexpand vexpand>
