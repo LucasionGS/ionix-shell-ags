@@ -4,37 +4,17 @@ import { type Accessor, createState, createMemo, For } from "gnim"
 import { registerPanelAction } from "../panel-action"
 import GLib from "gi://GLib"
 import GdkPixbuf from "gi://GdkPixbuf"
+import { clients as cachedClients, type HyprClient } from "./hypr-clients"
 
 // GJS global — not in ES2023 lib but available at runtime
 declare const setTimeout: (fn: () => void, ms: number) => unknown
-
-interface HyprClient {
-  address: string
-  title: string
-  class: string
-  workspace: { id: number; name: string }
-  focusHistoryID: number
-  mapped: boolean
-}
 
 const PREVIEW_DIR = `${GLib.get_user_cache_dir()}/ionix-shell/alttab`
 const PREVIEW_W = 160
 const PREVIEW_H = 90
 
-async function ensurePreviewDir() {
-  await execAsync(["mkdir", "-p", PREVIEW_DIR])
-}
-
-async function getClients(): Promise<HyprClient[]> {
-  try {
-    const out = await execAsync("hyprctl clients -j")
-    const clients: HyprClient[] = JSON.parse(out)
-    return clients
-      .filter((c) => c.mapped && c.title && c.workspace.id >= 0)
-      .sort((a, b) => a.focusHistoryID - b.focusHistoryID)
-  } catch {
-    return []
-  }
+function ensurePreviewDir() {
+  execAsync(["mkdir", "-p", PREVIEW_DIR]).catch(() => {})
 }
 
 async function capturePreview(
@@ -90,7 +70,10 @@ function WindowItem(props: {
           <Gtk.Image
             visible={createMemo(() => pixbuf() !== null)}
             $={(self) => {
+              let alive = true
+              self.connect("destroy", () => { alive = false })
               pixbuf.subscribe(() => {
+                if (!alive) return
                 const pb = pixbuf()
                 if (pb) self.set_from_pixbuf(pb)
               })
@@ -121,24 +104,19 @@ export function WindowSwitcher(
   hide: () => void,
   show: () => void,
 ) {
-  const [clients, setClients] = createState<HyprClient[]>([])
+  const [displayedClients, setDisplayedClients] = createState<HyprClient[]>([])
   const [selectedIndex, setSelectedIndex] = createState(0)
 
-  async function refresh() {
-    await ensurePreviewDir()
-    const list = await getClients()
-    setClients(list)
-    // Windows-style: start selection at index 1 (previous window),
-    // since focusHistoryID 0 is the currently active window.
+  function open() {
+    ensurePreviewDir()
+    const list = cachedClients()
+    setDisplayedClients(list)
     setSelectedIndex(list.length > 1 ? 1 : 0)
   }
 
   visible.subscribe(() => {
-    if (visible()) {
-      refresh()
-    } else {
-      setClients([])
-    }
+    if (visible()) open()
+    else setDisplayedClients([])
   })
 
   // IPC actions: ags request -i ionix-shell window-switcher <action>
@@ -168,7 +146,7 @@ export function WindowSwitcher(
   })
 
   function activate(idx: number) {
-    const list = clients()
+    const list = displayedClients()
     if (idx < 0 || idx >= list.length) return
     const c = list[idx]
     hide()
@@ -182,13 +160,13 @@ export function WindowSwitcher(
   }
 
   function next() {
-    const len = clients().length
+    const len = displayedClients().length
     if (len === 0) return
     setSelectedIndex((selectedIndex() + 1) % len)
   }
 
   function prev() {
-    const len = clients().length
+    const len = displayedClients().length
     if (len === 0) return
     setSelectedIndex((selectedIndex() - 1 + len) % len)
   }
@@ -266,8 +244,16 @@ export function WindowSwitcher(
             label="SWITCH WINDOW"
             xalign={0}
           />
-          <box class="alttab-grid" halign={Gtk.Align.CENTER}>
-            <For each={clients}>
+          <Gtk.FlowBox
+            halign={Gtk.Align.CENTER}
+            max_children_per_line={7}
+            min_children_per_line={1}
+            selection_mode={Gtk.SelectionMode.NONE}
+            homogeneous
+            row_spacing={8}
+            column_spacing={8}
+          >
+            <For each={displayedClients}>
               {(client, index) => (
                 <WindowItem
                   client={client}
@@ -277,7 +263,7 @@ export function WindowSwitcher(
                 />
               )}
             </For>
-          </box>
+          </Gtk.FlowBox>
         </box>
       </box>
     </eventbox>
