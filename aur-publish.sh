@@ -41,6 +41,7 @@ fi
 
 # Copy PKGBUILD into the AUR repo
 cp "${SCRIPT_DIR}/PKGBUILD" "${AUR_DIR}/PKGBUILD"
+cp "${SCRIPT_DIR}/ionix-shell.install" "${AUR_DIR}/ionix-shell.install"
 
 # Resolve the real version from the project git history and patch the AUR copy.
 # The static pkgver=r0.000000 in PKGBUILD is intentional for the source repo;
@@ -57,7 +58,7 @@ echo "Generating .SRCINFO..."
 
 # Stage, commit, push
 cd "${AUR_DIR}"
-git add PKGBUILD .SRCINFO
+git add PKGBUILD ionix-shell.install .SRCINFO
 if git diff --cached --quiet; then
     echo "No changes to publish."
     exit 0
