@@ -266,39 +266,37 @@ export function WindowSwitcher(
         }
       }}
     >
-      <box halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER} hexpand vexpand>
-        <box
-          class="alttab-panel"
-          vertical
+      <box
+        class="alttab-panel"
+        vertical
+        halign={Gtk.Align.CENTER}
+        valign={Gtk.Align.CENTER}
+      >
+        <label
+          class="alttab-title"
+          label="SWITCH WINDOW"
+          xalign={0}
+        />
+        <Gtk.FlowBox
           halign={Gtk.Align.CENTER}
-          valign={Gtk.Align.CENTER}
+          max_children_per_line={createMemo(() => swSettings.get.maxColumns())}
+          min_children_per_line={1}
+          selection_mode={Gtk.SelectionMode.NONE}
+          homogeneous
+          row_spacing={8}
+          column_spacing={8}
         >
-          <label
-            class="alttab-title"
-            label="SWITCH WINDOW"
-            xalign={0}
-          />
-          <Gtk.FlowBox
-            halign={Gtk.Align.CENTER}
-            max_children_per_line={createMemo(() => swSettings.get.maxColumns())}
-            min_children_per_line={1}
-            selection_mode={Gtk.SelectionMode.NONE}
-            homogeneous
-            row_spacing={8}
-            column_spacing={8}
-          >
-            <For each={displayedClients}>
-              {(client, index) => (
-                <WindowItem
-                  client={client}
-                  selectedIndex={selectedIndex}
-                  index={index}
-                  onActivate={() => activate(index())}
-                />
-              )}
-            </For>
-          </Gtk.FlowBox>
-        </box>
+          <For each={displayedClients}>
+            {(client, index) => (
+              <WindowItem
+                client={client}
+                selectedIndex={selectedIndex}
+                index={index}
+                onActivate={() => activate(index())}
+              />
+            )}
+          </For>
+        </Gtk.FlowBox>
       </box>
     </eventbox>
   )
