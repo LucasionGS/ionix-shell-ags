@@ -6,7 +6,7 @@ import panels from "./panels/index"
 import { getEngine } from "./panels/automation/engine"
 import { registerPanelToggle } from "./panels/panel-toggle"
 import { invokePanelAction } from "./panels/panel-action"
-import { DesktopPanel } from "./panels/desktop/DesktopPanel"
+import { createDesktopWindows } from "./panels/desktop/DesktopPanel"
 // Import general settings early so they're registered before the settings panel renders
 import "./panels/settings/general-settings"
 
@@ -84,17 +84,7 @@ app.start({
     // Start automation engine
     getEngine().start()
 
-    // Desktop layer — always visible, sits above wallpaper
-    const desktopWin = new Astal.Window({
-      name: "desktop",
-      application: app,
-      anchor: Astal.WindowAnchor.TOP | Astal.WindowAnchor.BOTTOM |
-              Astal.WindowAnchor.LEFT | Astal.WindowAnchor.RIGHT,
-      keymode: Astal.Keymode.NONE,
-      exclusivity: Astal.Exclusivity.NORMAL,
-      layer: Astal.Layer.BOTTOM,
-      visible: true,
-    })
-    desktopWin.add(DesktopPanel())
+    // Desktop layer — one window per monitor, managed by DesktopPanel
+    createDesktopWindows(app)
   },
 })

@@ -1,29 +1,82 @@
-import { Gtk } from "ags/gtk3"
-import { createState, For } from "gnim"
+import { Gtk, Gdk, Astal } from "ags/gtk3"
+import { createState, For, type Accessor } from "gnim"
 import Gio from "gi://Gio"
 import GioUnix from "gi://GioUnix"
 import GLib from "gi://GLib"
 import GdkPixbuf from "gi://GdkPixbuf"
-import { registerSettings } from "../settings/settings-store"
+import { registerSettings, type SettingsSchema } from "../settings/settings-store"
 
-const DESKTOP_DIR = `${GLib.get_home_dir()}/Desktop`
+const DEFAULT_DESKTOP_DIR = `${GLib.get_home_dir()}/Desktop`
 
-const desktopSettings = registerSettings(
-  "desktop",
-  "Desktop",
-  "user-desktop-symbolic",
-  {
-    iconSize: {
-      type: "number" as const,
-      label: "Icon Size",
-      description: "Size of desktop icons in pixels",
-      default: 48,
-      min: 16,
-      max: 96,
-      step: 8,
-    },
+// ─── Monitor discovery ────────────────────────────────────────────────────────
+
+interface MonitorInfo {
+  index: number
+  gdk: Gdk.Monitor | null
+  id: string
+  label: string
+}
+
+function discoverMonitors(): MonitorInfo[] {
+  const display = Gdk.Display.get_default()
+  if (!display) return [{ index: 0, gdk: null, id: "mon0", label: "Monitor 0" }]
+  const n = display.get_n_monitors()
+  const result: MonitorInfo[] = []
+  for (let i = 0; i < n; i++) {
+    try {
+      const gdk = display.get_monitor(i)
+      const model = gdk?.get_model() ?? ""
+      const mfr = gdk?.get_manufacturer() ?? ""
+      const label = [mfr, model].filter(Boolean).join(" ") || `Monitor ${i}`
+      const id = `mon${i}` + (model ? `_${model.replace(/\W+/g, "_").toLowerCase()}` : "")
+      result.push({ index: i, gdk: gdk ?? null, id, label })
+    } catch {
+      result.push({ index: i, gdk: null, id: `mon${i}`, label: `Monitor ${i}` })
+    }
+  }
+  return result.length > 0 ? result : [{ index: 0, gdk: null, id: "mon0", label: "Monitor 0" }]
+}
+
+const detectedMonitors = discoverMonitors()
+
+// ─── Settings ─────────────────────────────────────────────────────────────────
+
+const schema: SettingsSchema = {
+  enabled: {
+    type: "boolean" as const,
+    label: "Enable Desktop",
+    description: "Show icons on the desktop layer",
+    default: true,
   },
-)
+  iconSize: {
+    type: "number" as const,
+    label: "Icon Size",
+    description: "Size of desktop icons in pixels",
+    default: 48,
+    min: 16,
+    max: 96,
+    step: 8,
+  },
+}
+
+for (const mon of detectedMonitors) {
+  schema[`${mon.id}_enabled`] = {
+    type: "boolean" as const,
+    label: `${mon.label} — Show Icons`,
+    description: "Show desktop icons on this monitor",
+    default: true,
+  }
+  schema[`${mon.id}_dir`] = {
+    type: "string" as const,
+    label: `${mon.label} — Desktop Path`,
+    description: "Folder shown as desktop on this monitor",
+    default: DEFAULT_DESKTOP_DIR,
+  }
+}
+
+const desktopSettings = registerSettings("desktop", "Desktop", "user-desktop-symbolic", schema)
+
+export const desktopEnabled = desktopSettings.get.enabled as Accessor<boolean>
 
 function iconSize() {
   return desktopSettings.get.iconSize() as number
@@ -53,8 +106,8 @@ function getIconPixbuf(
   return null
 }
 
-function loadDesktopEntries(): DesktopEntry[] {
-  const dir = Gio.File.new_for_path(DESKTOP_DIR)
+function loadDesktopEntries(dirPath: string): DesktopEntry[] {
+  const dir = Gio.File.new_for_path(dirPath)
   const entries: DesktopEntry[] = []
 
   try {
@@ -157,23 +210,34 @@ function DesktopIcon(entry: DesktopEntry) {
   )
 }
 
-export function DesktopPanel() {
+function MonitorDesktopPanel(dirAccessor: Accessor<string>) {
   const [entries, setEntries] = createState<DesktopEntry[]>(
-    loadDesktopEntries(),
+    loadDesktopEntries(dirAccessor()),
   )
 
-  // Watch the Desktop directory for changes and reload
-  try {
-    const dir = Gio.File.new_for_path(DESKTOP_DIR)
-    const monitor = dir.monitor_directory(Gio.FileMonitorFlags.NONE, null)
-    monitor.connect("changed", () => {
-      setEntries(loadDesktopEntries())
-    })
-  } catch {}
+  let fileMonitor: Gio.FileMonitor | null = null
+  function watchDir(dirPath: string) {
+    if (fileMonitor) {
+      try { fileMonitor.cancel() } catch {}
+      fileMonitor = null
+    }
+    try {
+      const dirFile = Gio.File.new_for_path(dirPath)
+      fileMonitor = dirFile.monitor_directory(Gio.FileMonitorFlags.NONE, null)
+      fileMonitor.connect("changed", () => setEntries(loadDesktopEntries(dirPath)))
+    } catch {}
+  }
 
-  // Reload when icon size changes
+  watchDir(dirAccessor())
+
+  dirAccessor.subscribe(() => {
+    const dir = dirAccessor()
+    setEntries(loadDesktopEntries(dir))
+    watchDir(dir)
+  })
+
   desktopSettings.get.iconSize.subscribe(() => {
-    setEntries(loadDesktopEntries())
+    setEntries(loadDesktopEntries(dirAccessor()))
   })
 
   return (
@@ -195,4 +259,35 @@ export function DesktopPanel() {
       </Gtk.FlowBox>
     </box>
   )
+}
+
+export function createDesktopWindows(application: Astal.Application) {
+  const globalEnabled = desktopSettings.get.enabled as Accessor<boolean>
+
+  for (const mon of detectedMonitors) {
+    const monEnabled = desktopSettings.get[`${mon.id}_enabled`] as Accessor<boolean>
+    const monDir = desktopSettings.get[`${mon.id}_dir`] as Accessor<string>
+
+    const isVisible = () => (globalEnabled() as unknown as boolean) && (monEnabled() as unknown as boolean)
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const params: any = {
+      name: `desktop-${mon.index}`,
+      application,
+      anchor: Astal.WindowAnchor.TOP | Astal.WindowAnchor.BOTTOM |
+              Astal.WindowAnchor.LEFT | Astal.WindowAnchor.RIGHT,
+      keymode: Astal.Keymode.NONE,
+      exclusivity: Astal.Exclusivity.NORMAL,
+      layer: Astal.Layer.BOTTOM,
+      visible: isVisible(),
+    }
+    if (mon.gdk) params.gdkmonitor = mon.gdk
+
+    const win = new Astal.Window(params)
+    win.add(MonitorDesktopPanel(monDir))
+
+    const updateVisible = () => { win.visible = isVisible() }
+    globalEnabled.subscribe(updateVisible)
+    monEnabled.subscribe(updateVisible)
+  }
 }
