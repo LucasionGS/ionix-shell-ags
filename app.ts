@@ -6,6 +6,7 @@ import panels from "./panels/index"
 import { getEngine } from "./panels/automation/engine"
 import { registerPanelToggle } from "./panels/panel-toggle"
 import { invokePanelAction } from "./panels/panel-action"
+import { DesktopPanel } from "./panels/desktop/DesktopPanel"
 
 // Create state for each panel before app.start so both main() and
 // requestHandler() can reference them.
@@ -80,5 +81,18 @@ app.start({
 
     // Start automation engine
     getEngine().start()
+
+    // Desktop layer — always visible, sits above wallpaper
+    const desktopWin = new Astal.Window({
+      name: "desktop",
+      application: app,
+      anchor: Astal.WindowAnchor.TOP | Astal.WindowAnchor.BOTTOM |
+              Astal.WindowAnchor.LEFT | Astal.WindowAnchor.RIGHT,
+      keymode: Astal.Keymode.NONE,
+      exclusivity: Astal.Exclusivity.NORMAL,
+      layer: Astal.Layer.BOTTOM,
+      visible: true,
+    })
+    desktopWin.add(DesktopPanel())
   },
 })

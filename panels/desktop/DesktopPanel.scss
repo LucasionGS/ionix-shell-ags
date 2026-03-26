@@ -1,0 +1,35 @@
+@use "sass:color";
+@use "../../variables" as *;
+
+.desktop-grid {
+  padding: 24px;
+}
+
+.desktop-icon {
+  all: unset;
+  padding: 8px;
+  border-radius: $radius;
+  border: 1px solid transparent;
+  min-width: 80px;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  &:active {
+    background-color: rgba(255, 255, 255, 0.14);
+  }
+}
+
+.desktop-icon-image {
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.desktop-icon-label {
+  font-size: 0.78em;
+  color: $fg;
+  margin-top: 4px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
