@@ -5,6 +5,7 @@ import style from "./style.scss"
 import panels from "./panels/index"
 import { getEngine } from "./panels/automation/engine"
 import { registerPanelToggle } from "./panels/panel-toggle"
+import { invokePanelAction } from "./panels/panel-action"
 
 // Create state for each panel before app.start so both main() and
 // requestHandler() can reference them.
@@ -42,7 +43,9 @@ app.start({
         setVisible(false)
         break
       default:
-        setVisible(!visible())
+        if (!invokePanelAction(cmd, action)) {
+          setVisible(!visible())
+        }
     }
 
     res("ok")
@@ -52,6 +55,7 @@ app.start({
     for (const panel of panels) {
       const [visible, setVisible] = panelStates.get(panel.id)!
       const hide = () => setVisible(false)
+      const show = () => setVisible(true)
 
       // Each panel's setup function creates the window content.
       // The window is created here so the registry controls all
@@ -66,7 +70,7 @@ app.start({
         visible: false,
       })
 
-      win.add(panel.setup(visible, hide))
+      win.add(panel.setup(visible, hide, show))
 
       // Sync window visibility with panel state
       visible.subscribe(() => {

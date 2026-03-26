@@ -6,6 +6,7 @@
 @use "panels/booru/BooruPanel";
 @use "panels/automation/AutomationPanel";
 @use "panels/hue/HuePanel";
+@use "panels/window-switcher/WindowSwitcher";
 
 // Global window reset for overlay panels
 window {
