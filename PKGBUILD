@@ -27,6 +27,7 @@ optdepends=(
 makedepends=('git' 'aylurs-gtk-shell-git')
 source=("$pkgname::git+https://github.com/LucasionGS/ionix-shell-ags.git")
 sha256sums=('SKIP')
+install=$pkgname.install
 
 pkgver() {
     cd "$srcdir/$pkgname"
