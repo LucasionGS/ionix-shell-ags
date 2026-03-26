@@ -22,6 +22,7 @@ optdepends=(
     'zoxide: Frecency-based directory navigation in command palette'
     'ionix-openconnect-tools: OpenConnect VPN panel'
     'openconnect: VPN panel (requires oc wrapper CLI)'
+    'hue-cli-git: Hue CLI integration for Hue panel'
 )
 makedepends=('git' 'aylurs-gtk-shell-git')
 source=("$pkgname::git+https://github.com/LucasionGS/ionix-shell-ags.git")
