@@ -57,6 +57,7 @@ EOF
 Description=ionix-shell Hyprland overlay shell
 PartOf=graphical-session.target
 After=graphical-session.target
+ConditionEnvironment=HYPRLAND_INSTANCE_SIGNATURE
 
 [Service]
 ExecStart=/usr/bin/$pkgname
